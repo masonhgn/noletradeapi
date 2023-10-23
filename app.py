@@ -9,7 +9,7 @@ from pymongo import MongoClient
 import uuid
 app = Flask(__name__)
 app.config['MONGO_URI'] = os.getenv('MONGO_URI')
-app.config['JWT_SECRET_KEY'] = 'your-secret-key'  # Replace with a secure secret key
+app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 
 
 client = MongoClient(os.environ.get('MONGO_URI'))
@@ -146,17 +146,9 @@ class AssetsResource(Resource):
         else:
             return {'message': 'Asset not found'}, 404
 
-# Add API resource routes
+
 api.add_resource(TradingStrategiesResource, '/api/trading_strategies')
-api.add_resource(AssetsResource, '/api/assets')
-api.add_resource(AssetsResource, '/api/assets/<string:asset_name>')
-
-
-
-
-
-
-
+api.add_resource(AssetsResource, '/api/assets', '/api/assets/<string:asset_name>')
 
 
 

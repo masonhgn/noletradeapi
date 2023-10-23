@@ -49,7 +49,14 @@ def new_asset(access_token, user_id, name, description, purchase_date, appreciat
     print(response)
 
 
-username = 'test'
+
+
+
+
+
+
+
+username = 'mason12345'
 
 new_user(username, '12345', 't5643gh65333h635')
 
