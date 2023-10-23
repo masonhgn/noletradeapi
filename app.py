@@ -77,16 +77,35 @@ class TradingStrategiesResource(Resource):
 
     @jwt_required()
     def post(self):
-        current_user = get_jwt_identity()
-        data = request.json
-        data['user_id'] = current_user
-        result = db.trading_strategies.insert_one(data)
-        new_strategy = db.trading_strategies.find_one({'_id': result.inserted_id})
-        return jsonify(new_strategy), 201
+        current_user = get_jwt_identity() #get current authenticated user
+        data = request.json #convert to json
 
+        exists = db.trading_strategies.find_one({'user_id': current_user, 'name': data['name']}) #try to find an strategy that already exists for the current user with the same name, (avoid duplication)
+        if exists:
+            print('ERROR! CANNOT CREATE NEW TRADING STRATEGY: STRATEGY NAME ALREADY EXISTS!')
+            return {'message': 'Strategy name already exists'}, 400
+        else:
+            print('creating trading strategy......')
+            GENERATED_ID = str(uuid.uuid4()) # generate unique id using uuid package
 
+            data['user_id'] = current_user
+            data['_id'] = GENERATED_ID
+            result = db.trading_strategies.insert_one(data)
 
+            if result.acknowledged:
+                return {'message': 'Trading strategy created successfully: ' + data['_id']}, 201
+            else:
+                return {'message': 'Failed to create strategy'}, 500
 
+    @jwt_required()
+    def get_strategy(self, strategy_name):
+        current_user = get_jwt_identity() #get current username that is authenticated
+        strategy = db.trading_strategies.find_one({'user_id': current_user, 'name': strategy_name})
+        if strategy:
+            return jsonify(strategy), 200
+        else:
+            return {'message': 'Strategy not found'}, 404
+        
 
 ######## ASSET API ENDPOINT #############
 class AssetsResource(Resource):
@@ -130,6 +149,7 @@ class AssetsResource(Resource):
 # Add API resource routes
 api.add_resource(TradingStrategiesResource, '/api/trading_strategies')
 api.add_resource(AssetsResource, '/api/assets')
+api.add_resource(AssetsResource, '/api/assets/<string:asset_name>')
 
 
 

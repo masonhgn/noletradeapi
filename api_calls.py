@@ -1,6 +1,6 @@
 import requests
 
-base_url = 'http://localhost:5000'
+base_url = 'http://174.138.126.199:5000'
 
 
 def new_user(username, password, tradier_token):
@@ -49,13 +49,13 @@ def new_asset(access_token, user_id, name, description, purchase_date, appreciat
     print(response)
 
 
-username = 'mason'
+username = 'test'
 
-#new_user(username, '1234', 't5643gh653h653h635')
+new_user(username, '12345', 't5643gh65333h635')
 
-token = login(username,'1234')
+#token = login(username,'1234')
 
-new_asset(token, username, 'My house', 'the housing market is booming. time to buy!', '2007-12-05', -0.5, '250000')
+#new_asset(token, username, 'My house', 'the housing market is booming. time to buy!', '2007-12-05', -0.5, '250000')
 
 
 
