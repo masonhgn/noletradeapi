@@ -22,6 +22,10 @@ api = Api(app)
 
 
 
+@app.route('/', methods=['GET'])
+def home():
+    return "TEST"
+
 
 ################# USER REGISTER ###################
 @app.route('/api/register', methods=['POST'])
