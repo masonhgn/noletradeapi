@@ -1,0 +1,13 @@
+Welcome to my flask API usage guide. This is just basic Gunicorn stuff.
+
+
+I) wondering how to start the gunicorn server (start the app)?
+
+	1. cd to the ~ directory, then activate the virtual environment by doing source virtualenv/bin/activate
+	2. cd into noletradeapi/ then run gunicorn -c gunicorn_config.py app:app --daemon
+
+
+II) wondering how to stop the gunicorn server (shut down the app)?
+	
+	1. ps aux | grep gunicorn
+	2. kill -9 [pid]  

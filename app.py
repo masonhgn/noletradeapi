@@ -22,6 +22,12 @@ api = Api(app)
 
 
 
+####### HOME ROUTE ##########
+@app.route('/', methods=['GET'])
+def home():
+    return "Welcome to Emma's website. It is currently being used for something else. Please come back another time."
+
+
 
 ################# USER REGISTER ###################
 @app.route('/api/register', methods=['POST'])
@@ -172,7 +178,6 @@ class AssetsResource(Resource):
 # Add API resource routes
 api.add_resource(TradingStrategiesResource, '/api/trading_strategies')
 api.add_resource(AssetsResource, '/api/assets')
-api.add_resource(AssetsResource, '/api/assets/<string:asset_name>')
 
 
 
