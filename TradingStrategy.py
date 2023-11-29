@@ -8,7 +8,7 @@ class TradingStrategy:
         self.description = description
         self.type = type  # momentum, reversion
         self.frequency = frequency  # 1d, 2d, 1w, 2w, etc.
-        self.execution_date = datetime.date.today()
+        self.execution_date = str(datetime.date.today())
         self.active = False
 
     def serialize(self):

@@ -24,7 +24,7 @@ FUNCTION OF THIS SCRIPT
 def fetch_active_strategies():
     print('fetching all active strategies')
     '''gets all active TradingStrategy objects for all users whose execution days are today'''
-    today = datetime.date.today()
+    today = str(datetime.date.today())
     print(f'Fetching all active strategies for {today}')
 
     # Get all active strategies with an execution date equal to today

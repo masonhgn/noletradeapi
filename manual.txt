@@ -10,4 +10,11 @@ I) wondering how to start the gunicorn server (start the app)?
 II) wondering how to stop the gunicorn server (shut down the app)?
 	
 	1. ps aux | grep gunicorn
-	2. kill -9 [pid]  
+	2. kill -9 [pid]
+
+
+III) wondering how to get the right environment variables set up?
+
+	1. export MONGO_URI=mongodb+srv://mason24h:funnyduck321@cluster0.yyqcwec.mongodb.net/?retryWrites=true&w=majority
+
+  

@@ -1,6 +1,6 @@
 import requests
 
-base_url = 'http://174.138.126.199:5000'
+base_url = 'https://emmaeverding.com'
 
 
 def new_user(username, password, tradier_token):
@@ -68,13 +68,13 @@ def new_strat(access_token, user_id, name, description, type, frequency):
     response = requests.post(url, json=data, headers=headers)
     print(response)
 
-username = 'test'
+username = 'mason12345'
 
 #new_user(username, '12345', 't5643gh65333h635')
 
-token = login(username,'1234')
+token = login(username,'12345')
 
-new_strat(token, username, 'my first strat', 'default strategy description', 'momentum', '1d')
+new_strat(token, username, 'other strat', 'default strategy description', 'reversion', '1d')
 #new_asset(token, username, 'My house', 'the housing market is booming. time to buy!', '2007-12-05', -0.5, '250000')
 
 
