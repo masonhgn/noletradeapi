@@ -50,18 +50,31 @@ def new_asset(access_token, user_id, name, description, purchase_date, appreciat
 
 
 
+def new_strat(access_token, user_id, name, description, type, frequency):
+    url = f'{base_url}/api/trading_strategies'
 
+    data = {
+        'user_id': user_id,
+        'name': name,
+        'description': description,
+        'type': type,
+        'frequency': frequency,
+    }
 
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
 
+    response = requests.post(url, json=data, headers=headers)
+    print(response)
 
+username = 'test'
 
+#new_user(username, '12345', 't5643gh65333h635')
 
-username = 'mason12345'
+token = login(username,'1234')
 
-new_user(username, '12345', 't5643gh65333h635')
-
-#token = login(username,'1234')
-
+new_strat(token, username, 'my first strat', 'default strategy description', 'momentum', '1d')
 #new_asset(token, username, 'My house', 'the housing market is booming. time to buy!', '2007-12-05', -0.5, '250000')
 
 

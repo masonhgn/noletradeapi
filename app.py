@@ -9,7 +9,7 @@ from pymongo import MongoClient
 import uuid
 app = Flask(__name__)
 app.config['MONGO_URI'] = os.getenv('MONGO_URI')
-app.config['JWT_SECRET_KEY'] = 'your-secret-key'
+app.config['JWT_SECRET_KEY'] = 'your-secret-key'  # Replace with a secure secret key
 
 
 client = MongoClient(os.environ.get('MONGO_URI'))
@@ -21,10 +21,6 @@ jwt = JWTManager(app)
 api = Api(app)
 
 
-
-@app.route('/', methods=['GET'])
-def home():
-    return "TEST"
 
 
 ################# USER REGISTER ###################
@@ -75,12 +71,14 @@ def login():
 class TradingStrategiesResource(Resource):
     @jwt_required()
     def get(self):
+        '''returns all existing trading strategies created by the user'''
         current_user = get_jwt_identity()
         strategies = db.trading_strategies.find({'user_id': current_user})
         return jsonify([strategy for strategy in strategies])
 
     @jwt_required()
     def post(self):
+        '''attempts to create a new trading strategy'''
         current_user = get_jwt_identity() #get current authenticated user
         data = request.json #convert to json
 
@@ -100,6 +98,27 @@ class TradingStrategiesResource(Resource):
                 return {'message': 'Trading strategy created successfully: ' + data['_id']}, 201
             else:
                 return {'message': 'Failed to create strategy'}, 500
+            
+
+    @jwt_required()
+    def put(self, strategy_id):
+        '''activates a specific trading strategy for the current user'''
+        current_user = get_jwt_identity()
+        
+        # Find the strategy by its UUID (_id field)
+        strategy = db.trading_strategies.find_one({'user_id': current_user, '_id': strategy_id})
+
+        if not strategy:
+            return {'message': 'Strategy not found'}, 404
+
+        # Set the 'active' field for all the user's strategies to False
+        db.trading_strategies.update_many({'user_id': current_user}, {'$set': {'active': False}})
+
+        # Activate the selected strategy
+        db.trading_strategies.update_one({'_id': strategy['_id']}, {'$set': {'active': True}})
+
+        return {'message': 'Strategy activated successfully'}, 200
+
 
     @jwt_required()
     def get_strategy(self, strategy_name):
@@ -150,9 +169,17 @@ class AssetsResource(Resource):
         else:
             return {'message': 'Asset not found'}, 404
 
-
+# Add API resource routes
 api.add_resource(TradingStrategiesResource, '/api/trading_strategies')
-api.add_resource(AssetsResource, '/api/assets', '/api/assets/<string:asset_name>')
+api.add_resource(AssetsResource, '/api/assets')
+api.add_resource(AssetsResource, '/api/assets/<string:asset_name>')
+
+
+
+
+
+
+
 
 
 
