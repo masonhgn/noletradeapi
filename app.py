@@ -66,10 +66,25 @@ def login():
     
     return jsonify({'message': 'Invalid username or password'}), 401
 
+    
+@app.route('/api/activate/<string:strategy_id>', methods=['PUT'])
+@jwt_required()
+def activate_strategy(strategy_id):
+    current_user = get_jwt_identity()
 
+    # Find the strategy by its ID
+    strategy = db.trading_strategies.find_one({'user_id': current_user, '_id': strategy_id})
 
+    if not strategy:
+        return jsonify({'message': 'Strategy not found'}), 404
 
+    # Set the 'active' field for all the user's strategies to False
+    db.trading_strategies.update_many({'user_id': current_user}, {'$set': {'active': False}})
 
+    # Activate the selected strategy
+    db.trading_strategies.update_one({'_id': strategy['_id']}, {'$set': {'active': True}})
+
+    return jsonify({'message': 'Strategy activated successfully'}), 200
 
 
 
@@ -105,26 +120,7 @@ class TradingStrategiesResource(Resource):
             else:
                 return {'message': 'Failed to create strategy'}, 500
             
-
-    @jwt_required()
-    def put(self, strategy_id):
-        '''activates a specific trading strategy for the current user'''
-        current_user = get_jwt_identity()
-        
-        # Find the strategy by its UUID (_id field)
-        strategy = db.trading_strategies.find_one({'user_id': current_user, '_id': strategy_id})
-
-        if not strategy:
-            return {'message': 'Strategy not found'}, 404
-
-        # Set the 'active' field for all the user's strategies to False
-        db.trading_strategies.update_many({'user_id': current_user}, {'$set': {'active': False}})
-
-        # Activate the selected strategy
-        db.trading_strategies.update_one({'_id': strategy['_id']}, {'$set': {'active': True}})
-
-        return {'message': 'Strategy activated successfully'}, 200
-
+    
 
     @jwt_required()
     def get_strategy(self, strategy_name):
