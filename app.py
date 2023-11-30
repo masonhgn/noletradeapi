@@ -6,6 +6,9 @@ from flask_restful import Resource, Api
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from pymongo import MongoClient
+from TradingStrategy import TradingStrategy
+from User import User
+from Asset import Asset
 import uuid
 app = Flask(__name__)
 app.config['MONGO_URI'] = os.getenv('MONGO_URI')
@@ -109,10 +112,9 @@ class TradingStrategiesResource(Resource):
             return {'message': 'Strategy name already exists'}, 400
         else:
             print('creating trading strategy......')
-            GENERATED_ID = str(uuid.uuid4()) # generate unique id using uuid package
-
             data['user_id'] = current_user
-            data['_id'] = GENERATED_ID
+            strategy = TradingStrategy(data['user_id'], data['name'], data['description'], data['type'], data['frequency'])
+            data = strategy.serialize()
             result = db.trading_strategies.insert_one(data)
 
             if result.acknowledged:
