@@ -36,17 +36,14 @@ def home():
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.json
-    username = data.get('username')
-    password = data.get('password')
-    tradier_token = data.get('tradier_token')
+    user = User(data.get('username'), generate_password_hash(password, method='scrypt'), data.get('tradier_token'), data.get('account_number'))
     
     # Check if the username is already taken
-    if db.users.find_one({'username': username}):
+    if db.users.find_one({'username': data['username']}):
         return jsonify({'message': 'Username already exists'}), 400
     
     # Create a new user record in the database
-    hashed_password = generate_password_hash(password, method='scrypt')
-    user_data = {'username': username, 'password': hashed_password, 'tradier_token': tradier_token}
+    user_data = user.serialize()
 
     result = db.users.insert_one(user_data)
     return jsonify({'message': 'User registered successfully'}), 201
