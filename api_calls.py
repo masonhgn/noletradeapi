@@ -72,7 +72,7 @@ def new_strat(access_token, user_id, name, description, type, frequency):
 
 
 def activate_strat(access_token, strat_id):
-    url = f'{base_url}/api/trading_strategies/{strat_id}'
+    url = f'{base_url}/api/activate/{strat_id}'
     
     
     headers = {
@@ -97,15 +97,14 @@ def get_strats(access_token):
 
 username = 'fuzzy'
 
-new_user(username, '12345', 't5643gh65333h635')
+#new_user(username, '12345', 't5643gh65333h635')
 
 token = login(username,'12345')
-print(token)
-#new_strat(token, username, 'strategy a', 'a cool momentum strategy that has a high threshold', 'reversion', '1d')
+#new_strat(token, username, 'strategy b', 'another cool strategy', 'reversion', '1d')
 #new_asset(token, username, 'My house', 'the housing market is booming. time to buy!', '2007-12-05', -0.5, '250000')
 
-get_strats(token)
-activate_strat(token, "4cefb0f1-4fc9-4656-b18e-60d5a9826298")
+#get_strats(token)
+activate_strat(token, "118b6b76-c005-4033-ab5a-94be64f825ba")
 
 
 

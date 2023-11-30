@@ -28,7 +28,8 @@ def fetch_active_strategies():
     print(f'Fetching all active strategies for {today}')
 
     # Get all active strategies with an execution date equal to today
-    active_strategies = db.trading_strategies.find({'active': True, 'execution_date': today})
+    active_strategies = db.trading_strategies.find({'active': True})
+    #active_strategies = db.trading_strategies.find({'active': True, 'execution_date': today})
 
     for strategy in active_strategies:
         execute_strategy(strategy)
@@ -41,9 +42,12 @@ def execute_strategy(strategy):
     user_id = strategy['user_id']
     name = strategy['name']
     frequency = strategy['frequency']
-    tradier_token = strategy['tradier_token']
 
     print(f'Executing strategy "{name}" (ID: {strategy_id}) for user {user_id}')
+
+    user = db.users.find_one({'username': user_id})
+    token = user['tradier_token']
+    print(token)
 
 
 
