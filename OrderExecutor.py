@@ -1,6 +1,8 @@
 import os
 from pymongo import MongoClient
 import datetime
+from tradier_api import ApiBridge
+from tools import top_x_momentum
 
 # Get the MongoDB URI from the environment variable
 mongo_uri = os.getenv('MONGO_URI')
@@ -25,9 +27,10 @@ def fetch_active_strategies():
     print('fetching all active strategies')
     '''gets all active TradingStrategy objects for all users whose execution days are today'''
     today = str(datetime.date.today())
-    print(f'Fetching all active strategies for {today}')
+    #print(f'Fetching all active strategies for {today}')
 
     # Get all active strategies with an execution date equal to today
+    
     active_strategies = db.trading_strategies.find({'active': True})
     #active_strategies = db.trading_strategies.find({'active': True, 'execution_date': today})
 
@@ -47,7 +50,32 @@ def execute_strategy(strategy):
 
     user = db.users.find_one({'username': user_id})
     token = user['tradier_token']
-    print(token)
+    acc_num = user['account_number']
+
+    bridge = ApiBridge(token, acc_num)
+    liquidated = bridge.liquidate()
+    
+    if not liquidated:
+        print('execute_strategy() ERROR: count not liquidate position.')
+        return
+    
+    #get top 5 highest momentum stocks in the s&p 500
+    tickers = top_x_momentum(5)
+
+    even_portion = bridge.get_cash_available() / 5
+    print(even_portion)
+
+    for ticker in tickers:
+        print(ticker)
+        price = bridge.quote(ticker)['last']
+        print(price)
+
+        bridge.market_order('buy', ticker, even_portion / float(price))
+        
+    print('success')
+
+
+
 
 
 

@@ -36,7 +36,8 @@ def home():
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.json
-    user = User(data.get('username'), generate_password_hash(password, method='scrypt'), data.get('tradier_token'), data.get('account_number'))
+    
+    user = User(data.get('username'), generate_password_hash(data.get('password'), method='scrypt'), data.get('tradier_token'), data.get('account_number'))
     
     # Check if the username is already taken
     if db.users.find_one({'username': data['username']}):

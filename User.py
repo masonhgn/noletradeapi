@@ -3,4 +3,4 @@ class User:
         self.username = username
         self.password = password
         self.tradier_token = tradier_token
-        self.account_numer = account_number
+        self.account_number = account_number

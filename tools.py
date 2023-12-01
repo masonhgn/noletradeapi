@@ -37,4 +37,3 @@ def top_x_momentum(x):
     first_5_items = dict(list(sorted_map.items())[:x])
     return first_5_items
 
-print(top_x_momentum(5))

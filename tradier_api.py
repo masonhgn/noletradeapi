@@ -33,8 +33,8 @@ class ApiBridge:
         return json_response
 
     def get_cash_available(self):
-        balance = self.getBalance()
-        print(balance['cash_available'])
+        balance = self.get_balance()
+        return (balance['balances']['total_cash'])
 
     def get_positions(self):
         response = requests.get('https://sandbox.tradier.com/v1/accounts/'+self.account_number+'/positions',
@@ -49,7 +49,7 @@ class ApiBridge:
         positions = bridge.get_positions()['positions']
         if positions == 'null':
             print('there are not positions to liquidate.')
-            return False
+            return True
         for pos in positions:
             for p in positions[pos]:
                 ticker = p['symbol']
@@ -78,7 +78,14 @@ class ApiBridge:
         json_response = response.json()
         return json_response
 
-
+    def quote(self, ticker):
+        response = requests.get('https://sandbox.tradier.com/v1/markets/quotes',
+            params={'symbols': ticker, 'greeks': 'false'},
+            headers={'Authorization': 'Bearer '+self.token, 'Accept': 'application/json'}
+        )
+        json_response = response.json()
+        return json_response['quotes']['quote']
+        #EXAMPLE: print(bridge.quote('AAPL')['last'])
 
 bridge = ApiBridge('LUiHZ2fsw2f8lfptk0UTmLH5BnrX','VA43237255')
 
@@ -87,8 +94,10 @@ bridge = ApiBridge('LUiHZ2fsw2f8lfptk0UTmLH5BnrX','VA43237255')
 #print(bridge.limit_order('AAPL', 30, '191'))
 #bridge.market_order('AMZN', 10)
 #positions = bridge.get_positions()['positions']
-print(bridge.liquidate())
+#print(bridge.liquidate())
 
+#print(bridge.quote('AAPL')['last'])
+print(bridge.get_cash_available())
 #def even_investment(tickers):
 
         
