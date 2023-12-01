@@ -14,6 +14,7 @@ def new_user(username, password, tradier_token, account_number):
     }
 
     response = requests.post(url, json=data)
+    print(response.text)
     print(response)
 
 def login(username, password):
