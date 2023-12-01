@@ -66,12 +66,10 @@ def execute_strategy(strategy):
     print(even_portion)
 
     for ticker in tickers:
-        print(ticker)
         price = bridge.quote(ticker)['last']
-        print(price)
 
-        bridge.market_order('buy', ticker, even_portion / float(price))
-        
+        print(bridge.market_order('buy', ticker, int(even_portion / float(price))))
+
     print('success')
 
 
