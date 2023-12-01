@@ -3,13 +3,14 @@ import requests
 base_url = 'https://emmaeverding.com'
 
 
-def new_user(username, password, tradier_token):
+def new_user(username, password, tradier_token, account_number):
     url = f'{base_url}/api/register'
 
     data = {
         'username': username,  
         'password': password,   
         'tradier_token': tradier_token,
+        'account_number': account_number
     }
 
     response = requests.post(url, json=data)
@@ -97,14 +98,14 @@ def get_strats(access_token):
 
 username = 'fuzzy'
 
-#new_user(username, '12345', 't5643gh65333h635')
+print(new_user(username, '12345', 'LUiHZ2fsw2f8lfptk0UTmLH5BnrX', 'VA43237255'))
 
-token = login(username,'12345')
+#token = login(username,'12345')
 #new_strat(token, username, 'strategy b', 'another cool strategy', 'reversion', '1d')
 #new_asset(token, username, 'My house', 'the housing market is booming. time to buy!', '2007-12-05', -0.5, '250000')
 
 #get_strats(token)
-activate_strat(token, "118b6b76-c005-4033-ab5a-94be64f825ba")
+#activate_strat(token, "118b6b76-c005-4033-ab5a-94be64f825ba")
 
 
 
