@@ -4,6 +4,22 @@ class ApiBridge:
     def __init__(self, token, account_number):
         self.token = token
         self.account_number = account_number
+
+    def check_market_open(self):
+        response = requests.get('https://api.tradier.com/v1/markets/clock',
+            params={'delayed': 'true'},
+            headers={'Authorization': 'Bearer <TOKEN>', 'Accept': 'application/json'}
+        )
+        json_response = response.json()
+        if json_response['clock']['state'] == 'closed':
+            return False
+        elif json_response['clock']['state'] == 'open':
+            return True
+        print('check_market_open() ERROR: something is wrong because it returned neither closed nor open')
+        return False
+
+
+
     def check_status(self):
         response = requests.get('https://sandbox.tradier.com/v1/user/profile',
             params={},
@@ -97,7 +113,7 @@ bridge = ApiBridge('LUiHZ2fsw2f8lfptk0UTmLH5BnrX','VA43237255')
 #print(bridge.liquidate())
 
 #print(bridge.quote('AAPL')['last'])
-print(bridge.get_cash_available())
+#print(bridge.get_cash_available())
 #def even_investment(tickers):
 
-        
+print(bridge.check_market_open())

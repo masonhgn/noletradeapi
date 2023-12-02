@@ -3,6 +3,7 @@ from pymongo import MongoClient
 import datetime
 from tradier_api import ApiBridge
 from tools import top_x_momentum
+import sys
 
 # Get the MongoDB URI from the environment variable
 mongo_uri = os.getenv('MONGO_URI')
@@ -25,8 +26,7 @@ FUNCTION OF THIS SCRIPT
 
 def fetch_active_strategies():
     print('fetching all active strategies')
-    print(os.getenv('MONGO_URI'))
-    '''gets all active TradingStrategy objects for all users whose execution days are today'''
+    '''gets all active TradingStrategy objects for all users'''
     today = str(datetime.date.today())
     #print(f'Fetching all active strategies for {today}')
 
@@ -54,6 +54,10 @@ def execute_strategy(strategy):
     acc_num = user['account_number']
 
     bridge = ApiBridge(token, acc_num)
+
+    if bridge.check_market_open() == False:
+        sys.exit("MARKET IS CLOSED.")
+
     liquidated = bridge.liquidate()
     
     if not liquidated:
