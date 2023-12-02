@@ -1,0 +1,18 @@
+495.33
+fetching all active strategies
+mongodb+srv://mason24h:funnyduck321@cluster0.yyqcwec.mongodb.net/?retryWrites=true&w=majority
+<pymongo.cursor.Cursor object at 0x7fc579123150>
+Executing strategy "strategy b" (ID: 118b6b76-c005-4033-ab5a-94be64f825ba) for user fuzzy
+200
+Traceback (most recent call last):
+  File "/root/noletradeapi/OrderExecutor.py", line 82, in <module>
+    fetch_active_strategies()
+  File "/root/noletradeapi/OrderExecutor.py", line 39, in fetch_active_strategies
+    execute_strategy(strategy)
+  File "/root/noletradeapi/OrderExecutor.py", line 57, in execute_strategy
+    liquidated = bridge.liquidate()
+                 ^^^^^^^^^^^^^^^^^^
+  File "/root/noletradeapi/tradier_api.py", line 57, in liquidate
+    success = (self.market_order('sell', ticker, quantity)['order']['status'] == 'ok')
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+KeyError: 'order'

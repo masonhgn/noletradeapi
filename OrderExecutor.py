@@ -25,6 +25,7 @@ FUNCTION OF THIS SCRIPT
 
 def fetch_active_strategies():
     print('fetching all active strategies')
+    print(os.getenv('MONGO_URI'))
     '''gets all active TradingStrategy objects for all users whose execution days are today'''
     today = str(datetime.date.today())
     #print(f'Fetching all active strategies for {today}')
@@ -33,7 +34,7 @@ def fetch_active_strategies():
     
     active_strategies = db.trading_strategies.find({'active': True})
     #active_strategies = db.trading_strategies.find({'active': True, 'execution_date': today})
-
+    print(active_strategies)
     for strategy in active_strategies:
         execute_strategy(strategy)
 

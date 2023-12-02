@@ -3,4 +3,4 @@ Flask-PyMongo
 Flask-RESTful
 Flask-JWT-Extended
 requests
-
+yfinance
