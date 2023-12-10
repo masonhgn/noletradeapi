@@ -14,12 +14,11 @@ def collect_sp_500_tickers():
 def create_10_day_momentum_map():
     tickers = collect_sp_500_tickers()
     end_date = datetime.now().strftime("%Y-%m-%d")
-    start_date = (datetime.now() - timedelta(days=16)).strftime("%Y-%m-%d")
+    start_date = (datetime.now() - timedelta(days=20)).strftime("%Y-%m-%d")
 
     momentum_map = {}
-
+    print(len(tickers))
     for ticker in tickers:
-
         #get the last 10 trading days of closing prices
         data = yf.download(ticker, start=start_date, end=end_date)
         if len(data) < 10: continue

@@ -64,8 +64,6 @@ def execute_strategy(strategy):
     tickers = top_x_momentum(5)
 
     even_portion = bridge.get_cash_available() / 5
-    print(even_portion)
-
     for ticker in tickers:
         price = bridge.quote(ticker)['last']
 

@@ -97,7 +97,7 @@ bridge = ApiBridge('LUiHZ2fsw2f8lfptk0UTmLH5BnrX','VA43237255')
 #print(bridge.liquidate())
 
 #print(bridge.quote('AAPL')['last'])
-print(bridge.get_cash_available())
+#print(bridge.get_cash_available())
 #def even_investment(tickers):
 
         
